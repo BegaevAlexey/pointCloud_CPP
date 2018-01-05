@@ -1,0 +1,3 @@
+/home/alexey/work/programming/opencv_projects/pointCloud/cmake-build-debug/CMakeFiles/rebuild_cache.dir
+/home/alexey/work/programming/opencv_projects/pointCloud/cmake-build-debug/CMakeFiles/edit_cache.dir
+/home/alexey/work/programming/opencv_projects/pointCloud/cmake-build-debug/CMakeFiles/pointCloud.dir
