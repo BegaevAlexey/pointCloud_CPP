@@ -3,48 +3,45 @@
 //            the program is founded on examples from opencv/sfm module
 //
 
+#define CERES_FOUND 1           // for work cv::smf::reconstract(.....)
 
-#include <opencv2/opencv.hpp>
-#include <opencv2/core.hpp>
+#include <opencv2/sfm.hpp>
 #include <opencv2/viz.hpp>
 #include <opencv2/calib3d.hpp>
-
-#define CERES_FOUND 1           // for work cv::smf::reconstract(.....)
-#include <opencv2/sfm.hpp>      // /usr/local/include/opencv2/sfm.hpp
+#include <opencv2/core.hpp>
 
 #include <iostream>
 #include <fstream>
 #include <string>
 
-//using namespace cv;
-
 // shows information about this program and arguments command line
 static void help();
 
 // takes the name of the directory and fills the vector with the file names in this directory
-int getdir(const std::string _filename, std::vector<std::string> &files);
+int getdir(const std::string _filename, std::vector<cv::String> &files);
 
 /*MAIN FUNCTION*/
 int main(int argc, char* argv[])
 {
     // Read input parameters
-    if ( argc != 5 )
+    if ( argc != 1 )
     {
         help();
         exit(0);
     }
     // Parse the image paths
-    std::vector<std::string> images_paths;
-    getdir( argv[1], images_paths );
+    std::vector<cv::String> imagesPath;
+    std::string pahtFile = "../../data_for_projects/pointCloud_images_Rot/dataset_files.txt";
+    getdir( pahtFile, imagesPath );
     // Build instrinsics
-    float f  = atof(argv[2]),
-            cx = atof(argv[3]), cy = atof(argv[4]);
+    float f  = 350,
+            cx = 240, cy = 360;
     cv::Matx33d K = cv::Matx33d( f, 0, cx,
                                  0, f, cy,
                                  0, 0,  1);
     bool is_projective = true;
     std::vector<cv::Mat> Rs_est, ts_est, points3d_estimated;
-    cv::sfm::reconstruct(images_paths, Rs_est, ts_est, K, points3d_estimated, is_projective);
+    cv::sfm::reconstruct(imagesPath, Rs_est, ts_est, K, points3d_estimated, is_projective);
 
     // Print output
     std::cout << "\n----------------------------\n" << std::endl;
@@ -120,7 +117,7 @@ static void help() {
 }
 
 // takes the name of the directory and fills the vector with the file names in this directory
-int getdir(const std::string _filename, std::vector<std::string> &files) {
+int getdir(const std::string _filename, std::vector<cv::String> &files) {
     std::ifstream myfile(_filename.c_str());
     if (!myfile.is_open()) {
         std::cout << "Unable to read file: " << _filename << std::endl;
